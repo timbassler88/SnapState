@@ -1,0 +1,7 @@
+Cloudflare API Keys:
+
+Access Key ID
+8d0a2398aead59b016557bcabc292634
+
+Secret Access Key
+b223bc52646b7de1a059e9857fe9c48e39b1428764226ee94b926c42246e72da

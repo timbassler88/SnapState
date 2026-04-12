@@ -1,0 +1,31 @@
+{
+  "name": "@snapstate/server",
+  "version": "3.0.0",
+  "description": "SnapState — production-ready state-persistence API for AI agents",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test tests/",
+    "seed": "node scripts/seed.js",
+    "migrate": "node src/store/migrations/migrate.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@fastify/rate-limit": "^9.1.0",
+    "@fastify/static": "^6.12.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.0",
+    "pg": "^8.13.0",
+    "stripe": "^17.0.0",
+    "uuid": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

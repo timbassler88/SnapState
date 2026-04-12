@@ -1,0 +1,25 @@
+{
+  "name": "@snapstate/sdk",
+  "version": "1.0.0",
+  "description": "Lightweight zero-dependency SDK for SnapState",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-cjs.js"
+  },
+  "files": [
+    "src/",
+    "dist/"
+  ],
+  "keywords": ["snapstate", "checkpoint", "state", "agent", "persistence"],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

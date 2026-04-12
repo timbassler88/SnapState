@@ -1,0 +1,21 @@
+{
+  "name": "@snapstate/mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server wrapper for SnapState — exposes checkpoint tools to any MCP-compatible agent",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "snapstate-mcp": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "start:http": "node src/transport.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
