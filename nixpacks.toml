@@ -1,8 +1,0 @@
-﻿[phases.setup]
-nixPkgs = ["nodejs_20", "npm"]
-
-[phases.build]
-cmds = ["cd server && npm install && npm run migrate && cd ../dashboard && npm install && npm run build && cd ../docs && npm install && npm run build"]
-
-[start]
-cmd = "cd server && npm start"
