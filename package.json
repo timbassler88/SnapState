@@ -1,1 +1,4 @@
-﻿{"name":"snapstate","private":true,"scripts":{"build":"cd server && npm install && npm run migrate && cd ../dashboard && npm install && npm run build && cd ../docs && npm install && npm run build","start":"cd server && npm start"}}
+{
+  "name": "snapstate",
+  "private": true
+}
