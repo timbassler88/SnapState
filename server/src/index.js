@@ -17,6 +17,7 @@ import { selfServiceRoutes } from './routes/self-service.js';
 import { agentRoutes } from './routes/agents.js';
 import { analyticsRoutes } from './routes/analytics.js';
 import { ttlManager } from './services/ttl-manager.js';
+import crypto from 'node:crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
