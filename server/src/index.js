@@ -48,6 +48,12 @@ export async function buildApp(opts = {}) {
     reply.type('text/html').send(landingHtml);
   });
 
+  // Get Started onboarding page
+  const getStartedHtml = fs.readFileSync(path.join(__dirname, 'get-started.html'), 'utf8');
+  fastify.get('/get-started', (request, reply) => {
+    reply.type('text/html').send(getStartedHtml);
+  });
+
   // Attach request ID as X-Request-Id on all responses
   fastify.addHook('onSend', async (request, reply) => {
     reply.header('X-Request-Id', request.id);

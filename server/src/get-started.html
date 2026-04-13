@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Started — SnapState</title>
+  <meta name="description" content="Create your SnapState account and start saving AI agent checkpoints in under 2 minutes.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%237B6FE8'/></svg>">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0B0B0F;
+      --surface: #13131A;
+      --border: #1E1E2A;
+      --text: #E8E8ED;
+      --dim: #7A7A8E;
+      --accent: #7B6FE8;
+      --accent-hover: #6A5ED6;
+      --green: #4ADE80;
+      --red: #EF4444;
+      --red-bg: rgba(239,68,68,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,15,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--dim);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Page ── */
+    .page {
+      padding: 48px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 36px;
+    }
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dim);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .step-circle svg {
+      width: 16px;
+      height: 16px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .step-circle.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(123,111,232,0.4);
+    }
+    .step-circle.done {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--dim);
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .progress-step.active .step-label { color: var(--accent); }
+    .progress-step.done .step-label { color: var(--green); }
+
+    .progress-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 4px;
+      margin-bottom: 28px;
+      transition: background 0.4s ease;
+      border-radius: 1px;
+    }
+    .progress-line.done { background: var(--green); }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-panel {
+      display: none;
+      animation: fadeUp 0.3s ease forwards;
+    }
+    .step-panel.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-heading {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .step-sub {
+      font-size: 14px;
+      color: var(--dim);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── Form ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 0.1px;
+    }
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder { color: var(--dim); opacity: 0.6; }
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(123,111,232,0.15);
+    }
+    .form-input.error {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+    }
+    .field-error {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 5px;
+      display: none;
+    }
+    .field-error.visible { display: block; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .btn-accent:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(123,111,232,0.35);
+    }
+    .btn-accent:active:not(:disabled) { transform: translateY(0); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--dim);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+    .btn-ghost:hover:not(:disabled) { color: var(--text); border-color: var(--dim); }
+
+    /* Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Global error banner ── */
+    .error-banner {
+      background: var(--red-bg);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 13px;
+      color: var(--red);
+      margin-bottom: 16px;
+      display: none;
+      line-height: 1.5;
+    }
+    .error-banner.visible { display: block; }
+    .error-banner a { color: var(--accent); text-decoration: underline; }
+
+    /* ── Step 2: Verify ── */
+    .mail-icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: rgba(123,111,232,0.1);
+      border: 1px solid rgba(123,111,232,0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .mail-icon-wrap svg {
+      width: 30px;
+      height: 30px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .verify-email-highlight {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .verify-hint {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    /* ── Login form (login fallback) ── */
+    .login-fallback {
+      display: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .login-fallback.visible { display: block; }
+    .login-fallback-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    /* ── Step 3: API Key ── */
+    .api-key-section {
+      margin-bottom: 28px;
+    }
+    .api-key-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .api-key-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: keyReveal 0.5s ease;
+    }
+    @keyframes keyReveal {
+      from { background: rgba(123,111,232,0.08); border-color: rgba(123,111,232,0.3); }
+      to   { background: var(--bg); border-color: var(--border); }
+    }
+    .api-key-value {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--text);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+    .api-key-warning {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: rgba(250,173,20,0.07);
+      border: 1px solid rgba(250,173,20,0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #FAAD14;
+      line-height: 1.5;
+    }
+    .api-key-warning span:first-child { flex-shrink: 0; }
+
+    /* ── Tabs ── */
+    .tabs-wrap { margin-top: 4px; }
+    .tabs-head {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-head::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 14px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dim);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Code blocks ── */
+    .code-wrap {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+      position: relative;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .code-lang {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .code-copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 3px 10px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .code-copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .code-copy-btn.copied { color: var(--green); border-color: var(--green); }
+    pre {
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--text);
+      tab-size: 2;
+    }
+    pre::-webkit-scrollbar { height: 4px; }
+    pre::-webkit-scrollbar-track { background: transparent; }
+    pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ── Install pill ── */
+    .install-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      margin-top: 12px;
+      gap: 10px;
+    }
+    .install-pill code {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--green);
+    }
+
+    /* Syntax highlight classes */
+    .kw { color: #C792EA; }
+    .str { color: #C3E88D; }
+    .fn  { color: #82AAFF; }
+    .cm  { color: #546E7A; font-style: italic; }
+    .nm  { color: #F78C6C; }
+    .pl  { color: #FFCB6B; }
+    .op  { color: #89DDFF; }
+    .ky  { color: #89DDFF; }
+
+    /* ── Bottom links ── */
+    .bottom-links {
+      display: flex;
+      gap: 20px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .bottom-links a {
+      font-size: 14px;
+      color: var(--dim);
+      font-weight: 500;
+      transition: color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .bottom-links a:hover { color: var(--accent); }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .card { padding: 28px 20px; }
+      .page { padding: 32px 12px 60px; }
+      .step-label { display: none; }
+      .nav-links { gap: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">SnapState</a>
+    <ul class="nav-links">
+      <li><a href="/docs/">Docs</a></li>
+      <li><a href="/dashboard/">Dashboard</a></li>
+      <li><a href="https://github.com/timbassler88/snapstate" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Progress indicator -->
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="progress-step active" id="prog-1">
+        <div class="step-circle active" id="circle-1">1</div>
+        <span class="step-label">Create Account</span>
+      </div>
+      <div class="progress-line" id="line-1"></div>
+      <div class="progress-step" id="prog-2">
+        <div class="step-circle" id="circle-2">2</div>
+        <span class="step-label">Verify Email</span>
+      </div>
+      <div class="progress-line" id="line-2"></div>
+      <div class="progress-step" id="prog-3">
+        <div class="step-circle" id="circle-3">3</div>
+        <span class="step-label">Start Building</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+
+    <!-- ─── Step 1: Create Account ─── -->
+    <div class="step-panel active" id="step-1">
+      <h2 class="step-heading">Create your account</h2>
+      <p class="step-sub">Get your API key and start saving checkpoints in 2 minutes.</p>
+
+      <div id="signup-error" class="error-banner"></div>
+
+      <div class="form-group">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-input" type="text" id="name" placeholder="Your name" autocomplete="name">
+        <div class="field-error" id="name-err">Please enter your name.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" placeholder="you@example.com" autocomplete="email">
+        <div class="field-error" id="email-err">Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password">
+        <div class="field-error" id="password-err">Password must be at least 8 characters.</div>
+      </div>
+
+      <button class="btn btn-accent" id="signup-btn" onclick="handleSignup()">
+        Create Account
+      </button>
+
+      <!-- Login fallback (shown when email already exists) -->
+      <div class="login-fallback" id="login-fallback">
+        <p class="login-fallback-title">Log in to your existing account</p>
+        <div id="login-error" class="error-banner"></div>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email</label>
+          <input class="form-input" type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input class="form-input" type="password" id="login-password" placeholder="Your password" autocomplete="current-password">
+        </div>
+        <button class="btn btn-accent" id="login-btn" onclick="handleLogin()">Log In</button>
+      </div>
+    </div>
+
+    <!-- ─── Step 2: Verify Email ─── -->
+    <div class="step-panel" id="step-2">
+      <div class="mail-icon-wrap">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+      </div>
+      <h2 class="step-heading">Check your inbox</h2>
+      <p class="step-sub">
+        We sent a verification link to <span class="verify-email-highlight" id="verify-email-display"></span>.
+        Click the link in the email to verify your account.
+      </p>
+
+      <div id="verify-error" class="error-banner"></div>
+
+      <button class="btn btn-accent" id="verify-btn" onclick="handleVerify()">
+        I've verified my email
+      </button>
+
+      <p class="verify-hint">Didn't receive it? Check your spam folder.</p>
+    </div>
+
+    <!-- ─── Step 3: Start Building ─── -->
+    <div class="step-panel" id="step-3">
+      <h2 class="step-heading">You're ready to build</h2>
+      <p class="step-sub">Your API key is ready. Pick your integration below.</p>
+
+      <!-- API Key -->
+      <div class="api-key-section">
+        <p class="api-key-label">Your API Key</p>
+        <div class="api-key-box">
+          <span class="api-key-value" id="api-key-display">Loading…</span>
+          <button class="copy-btn" onclick="copyApiKey(this)">Copy</button>
+        </div>
+        <div class="api-key-warning">
+          <span>⚠️</span>
+          <span>Save this key somewhere safe — you'll need it to authenticate API requests.</span>
+        </div>
+      </div>
+
+      <!-- Integration Tabs -->
+      <div class="tabs-wrap">
+        <div class="tabs-head">
+          <button class="tab-btn active" onclick="switchIntegTab(this,'tab-js')">JavaScript</button>
+          <button class="tab-btn" onclick="switchIntegTab(this,'tab-py')">Python</button>
+          <button class="tab-btn" onclick="switchIntegTab(this,'tab-mcp')">MCP Server</button>
+          <button class="tab-btn" onclick="switchIntegTab(this,'tab-curl')">curl</button>
+        </div>
+
+        <!-- JavaScript -->
+        <div class="tab-panel active" id="tab-js">
+          <div class="install-pill">
+            <code>npm install snapstate-sdk</code>
+            <button class="copy-btn" onclick="copyText(this,'npm install snapstate-sdk')">Copy</button>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <span class="code-lang">JavaScript</span>
+              <button class="code-copy-btn" id="copy-js-btn" onclick="copyCode(this,'code-js')">Copy</button>
+            </div>
+            <pre id="code-js"></pre>
+          </div>
+        </div>
+
+        <!-- Python -->
+        <div class="tab-panel" id="tab-py">
+          <div class="install-pill">
+            <code>pip install snapstate-sdk</code>
+            <button class="copy-btn" onclick="copyText(this,'pip install snapstate-sdk')">Copy</button>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <button class="code-copy-btn" id="copy-py-btn" onclick="copyCode(this,'code-py')">Copy</button>
+            </div>
+            <pre id="code-py"></pre>
+          </div>
+        </div>
+
+        <!-- MCP Server -->
+        <div class="tab-panel" id="tab-mcp">
+          <p style="font-size:13px;color:var(--dim);margin-top:14px;margin-bottom:4px;">Add this to your Claude Desktop config:</p>
+          <div class="code-wrap">
+            <div class="code-header">
+              <span class="code-lang">JSON</span>
+              <button class="code-copy-btn" id="copy-mcp-btn" onclick="copyCode(this,'code-mcp')">Copy</button>
+            </div>
+            <pre id="code-mcp"></pre>
+          </div>
+          <p style="font-size:13px;color:var(--dim);margin-top:16px;margin-bottom:4px;">Then install:</p>
+          <div class="code-wrap">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy-btn" onclick="copyCode(this,'code-mcp-install')">Copy</button>
+            </div>
+            <pre id="code-mcp-install"><span class="cm"># Clone the repo and install the MCP server</span>
+git clone https://github.com/timbassler88/snapstate.git
+cd snapstate/mcp-server &amp;&amp; npm install</pre>
+          </div>
+        </div>
+
+        <!-- curl -->
+        <div class="tab-panel" id="tab-curl">
+          <div class="code-wrap">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="code-copy-btn" id="copy-curl-btn" onclick="copyCode(this,'code-curl')">Copy</button>
+            </div>
+            <pre id="code-curl"></pre>
+          </div>
+        </div>
+
+      </div><!-- /tabs-wrap -->
+
+      <!-- Bottom links -->
+      <div class="bottom-links">
+        <a href="/docs/">Read the full documentation →</a>
+        <a href="https://github.com/timbassler88/snapstate" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /page -->
+
+<script>
+// ─── State ───────────────────────────────────────────────────
+let userEmail = '';
+let userPassword = '';
+let jwtToken = '';
+let apiKey = '';
+
+// ─── Progress ────────────────────────────────────────────────
+function setStep(n) {
+  // Hide all panels
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+
+  // Update circles
+  [1,2,3].forEach(i => {
+    const circle = document.getElementById('circle-' + i);
+    const prog = document.getElementById('prog-' + i);
+    circle.classList.remove('active', 'done');
+    prog.classList.remove('active', 'done');
+    if (i < n) {
+      circle.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      circle.classList.add('done');
+      prog.classList.add('done');
+    } else if (i === n) {
+      circle.textContent = i;
+      circle.classList.add('active');
+      prog.classList.add('active');
+    } else {
+      circle.textContent = i;
+    }
+  });
+
+  // Update connector lines
+  for (let i = 1; i <= 2; i++) {
+    const line = document.getElementById('line-' + i);
+    line.classList.toggle('done', i < n);
+  }
+}
+
+// ─── Error helpers ───────────────────────────────────────────
+function showBanner(id, msg) {
+  const el = document.getElementById(id);
+  el.innerHTML = msg;
+  el.classList.add('visible');
+}
+function hideBanner(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('visible');
+}
+function fieldErr(id, msg) {
+  const el = document.getElementById(id);
+  if (msg) { el.textContent = msg; el.classList.add('visible'); }
+  else { el.classList.remove('visible'); }
+}
+function clearFieldErrors(ids) {
+  ids.forEach(id => {
+    document.getElementById(id).classList.remove('visible');
+    const input = document.getElementById(id.replace('-err',''));
+    if (input) input.classList.remove('error');
+  });
+}
+function setInputError(inputId, errId, msg) {
+  document.getElementById(inputId).classList.add('error');
+  fieldErr(errId, msg);
+}
+
+function mapApiError(code, message) {
+  const map = {
+    EMAIL_ALREADY_EXISTS: 'An account with this email already exists.',
+    INVALID_CREDENTIALS:  'Incorrect email or password.',
+    EMAIL_NOT_VERIFIED:   'Your email hasn\'t been verified yet. Please click the link in the email first.',
+    RATE_LIMITED:         'Too many attempts. Please wait a moment and try again.',
+    VALIDATION_ERROR:     message || 'Please check your input and try again.',
+  };
+  return map[code] || message || 'Something went wrong. Please try again.';
+}
+
+function setBtnLoading(id, loading) {
+  const btn = document.getElementById(id);
+  if (loading) {
+    btn.disabled = true;
+    btn.dataset.origText = btn.textContent;
+    btn.innerHTML = '<div class="spinner"></div> ' + btn.dataset.origText;
+  } else {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.origText || btn.textContent;
+  }
+}
+
+// ─── Step 1: Signup ──────────────────────────────────────────
+async function handleSignup() {
+  hideBanner('signup-error');
+  clearFieldErrors(['name-err','email-err','password-err']);
+
+  const name     = document.getElementById('name').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  let valid = true;
+  if (!name) { setInputError('name','name-err','Please enter your name.'); valid=false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setInputError('email','email-err','Please enter a valid email address.'); valid=false;
+  }
+  if (password.length < 8) {
+    setInputError('password','password-err','Password must be at least 8 characters.'); valid=false;
+  }
+  if (!valid) return;
+
+  setBtnLoading('signup-btn', true);
+  try {
+    const res = await fetch('/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.status === 201) {
+      userEmail    = email;
+      userPassword = password;
+      document.getElementById('verify-email-display').textContent = email;
+      setStep(2);
+    } else if (res.status === 429) {
+      showBanner('signup-error', mapApiError('RATE_LIMITED'));
+    } else if (data.code === 'EMAIL_ALREADY_EXISTS') {
+      showBanner('signup-error',
+        'An account with this email already exists. ' +
+        '<a href="#" onclick="showLoginFallback(event)">Log in instead →</a>'
+      );
+    } else {
+      showBanner('signup-error', mapApiError(data.code, data.message));
+    }
+  } catch {
+    showBanner('signup-error', 'Unable to connect. Please check your internet connection and try again.');
+  } finally {
+    setBtnLoading('signup-btn', false);
+  }
+}
+
+function showLoginFallback(e) {
+  if (e) e.preventDefault();
+  hideBanner('signup-error');
+  document.getElementById('login-fallback').classList.add('visible');
+  document.getElementById('login-email').value = document.getElementById('email').value;
+  document.getElementById('login-email').focus();
+}
+
+async function handleLogin() {
+  hideBanner('login-error');
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) {
+    showBanner('login-error', 'Please enter your email and password.');
+    return;
+  }
+  setBtnLoading('login-btn', true);
+  try {
+    const res = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.token) {
+      userEmail    = email;
+      userPassword = password;
+      jwtToken     = data.token;
+      await loadApiKeyAndEnterStep3();
+    } else if (res.status === 429) {
+      showBanner('login-error', mapApiError('RATE_LIMITED'));
+    } else {
+      showBanner('login-error', mapApiError(data.code, data.message));
+    }
+  } catch {
+    showBanner('login-error', 'Unable to connect. Please check your internet connection and try again.');
+  } finally {
+    setBtnLoading('login-btn', false);
+  }
+}
+
+// ─── Step 2: Verify ──────────────────────────────────────────
+async function handleVerify() {
+  hideBanner('verify-error');
+  setBtnLoading('verify-btn', true);
+  try {
+    const res = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail, password: userPassword }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.token) {
+      jwtToken = data.token;
+      await loadApiKeyAndEnterStep3();
+    } else if (res.status === 429) {
+      showBanner('verify-error', mapApiError('RATE_LIMITED'));
+    } else if (data.code === 'EMAIL_NOT_VERIFIED') {
+      showBanner('verify-error', mapApiError('EMAIL_NOT_VERIFIED'));
+    } else {
+      showBanner('verify-error', mapApiError(data.code, data.message));
+    }
+  } catch {
+    showBanner('verify-error', 'Unable to connect. Please check your internet connection and try again.');
+  } finally {
+    setBtnLoading('verify-btn', false);
+  }
+}
+
+// ─── Step 3: API Key + Code ───────────────────────────────────
+async function loadApiKeyAndEnterStep3() {
+  // Try to get existing keys
+  try {
+    const res = await fetch('/self/keys', {
+      headers: { 'Authorization': 'Bearer ' + jwtToken },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      // data may be an array or { keys: [...] }
+      const keys = Array.isArray(data) ? data : (data.keys || data.data || []);
+      if (keys.length > 0) {
+        // API keys are typically returned with a `key` or `api_key` field
+        const k = keys[0];
+        apiKey = k.key || k.api_key || k.token || k.value || '';
+      }
+    }
+  } catch { /* fall through */ }
+
+  // If no key retrieved, create one
+  if (!apiKey) {
+    try {
+      const res = await fetch('/self/keys', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + jwtToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: 'Default' }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        apiKey = data.key || data.api_key || data.token || data.value || '';
+      }
+    } catch { /* fall through */ }
+  }
+
+  renderStep3();
+  setStep(3);
+}
+
+function renderStep3() {
+  const k = apiKey || 'snp_your_key_here';
+  document.getElementById('api-key-display').textContent = k;
+
+  // JavaScript code
+  document.getElementById('code-js').innerHTML = renderJs(k);
+
+  // Python code
+  document.getElementById('code-py').innerHTML = renderPy(k);
+
+  // MCP JSON
+  document.getElementById('code-mcp').innerHTML = renderMcp(k);
+
+  // curl
+  document.getElementById('code-curl').innerHTML = renderCurl(k);
+}
+
+function renderJs(k) {
+  return `<span class="kw">import</span> { <span class="fn">SnapStateClient</span> } <span class="kw">from</span> <span class="str">'snapstate-sdk'</span>;
+
+<span class="kw">const</span> <span class="pl">client</span> = <span class="kw">new</span> <span class="fn">SnapStateClient</span>({
+  <span class="ky">apiKey</span>: <span class="str">'${esc(k)}'</span>,
+});
+
+<span class="cm">// Save a checkpoint</span>
+<span class="kw">const</span> <span class="pl">result</span> = <span class="kw">await</span> <span class="pl">client</span>.<span class="fn">save</span>({
+  <span class="ky">workflowId</span>: <span class="str">'wf_my_first_workflow'</span>,
+  <span class="ky">step</span>: <span class="nm">1</span>,
+  <span class="ky">label</span>: <span class="str">'started'</span>,
+  <span class="ky">state</span>: { <span class="ky">task</span>: <span class="str">'hello world'</span>, <span class="ky">progress</span>: <span class="nm">0</span> },
+});
+console.<span class="fn">log</span>(<span class="str">'Checkpoint saved:'</span>, <span class="pl">result</span>);
+
+<span class="cm">// Resume later</span>
+<span class="kw">const</span> <span class="pl">resumed</span> = <span class="kw">await</span> <span class="pl">client</span>.<span class="fn">resume</span>(<span class="str">'wf_my_first_workflow'</span>);
+console.<span class="fn">log</span>(<span class="str">'Resumed from:'</span>, <span class="pl">resumed</span>.<span class="pl">latestCheckpoint</span>.<span class="pl">state</span>);`;
+}
+
+function renderPy(k) {
+  return `<span class="kw">from</span> snapstate_sdk <span class="kw">import</span> <span class="fn">SnapStateClient</span>
+
+<span class="pl">client</span> = <span class="fn">SnapStateClient</span>(<span class="ky">api_key</span>=<span class="str">"${esc(k)}"</span>)
+
+<span class="cm"># Save a checkpoint</span>
+<span class="pl">result</span> = <span class="pl">client</span>.<span class="fn">save</span>(
+    <span class="ky">workflow_id</span>=<span class="str">"wf_my_first_workflow"</span>,
+    <span class="ky">step</span>=<span class="nm">1</span>,
+    <span class="ky">label</span>=<span class="str">"started"</span>,
+    <span class="ky">state</span>={<span class="str">"task"</span>: <span class="str">"hello world"</span>, <span class="str">"progress"</span>: <span class="nm">0</span>},
+)
+<span class="fn">print</span>(<span class="str">"Checkpoint saved:"</span>, <span class="pl">result</span>)
+
+<span class="cm"># Resume later</span>
+<span class="pl">resumed</span> = <span class="pl">client</span>.<span class="fn">resume</span>(<span class="str">"wf_my_first_workflow"</span>)
+<span class="fn">print</span>(<span class="str">"Resumed from:"</span>, <span class="pl">resumed</span>.<span class="pl">latest_checkpoint</span>.<span class="pl">state</span>)`;
+}
+
+function renderMcp(k) {
+  return `{
+  <span class="ky">"mcpServers"</span>: {
+    <span class="ky">"snapstate"</span>: {
+      <span class="ky">"command"</span>: <span class="str">"node"</span>,
+      <span class="ky">"args"</span>: [<span class="str">"/path/to/snapstate/mcp-server/src/index.js"</span>],
+      <span class="ky">"env"</span>: {
+        <span class="ky">"SNAPSTATE_API_URL"</span>: <span class="str">"https://snapstate.dev"</span>,
+        <span class="ky">"SNAPSTATE_API_KEY"</span>: <span class="str">"${esc(k)}"</span>
+      }
+    }
+  }
+}`;
+}
+
+function renderCurl(k) {
+  return `<span class="cm"># Save a checkpoint</span>
+curl -X POST https://snapstate.dev/checkpoints \\
+  -H <span class="str">"Authorization: Bearer ${esc(k)}"</span> \\
+  -H <span class="str">"Content-Type: application/json"</span> \\
+  -d <span class="str">'{
+    "workflow_id": "wf_my_first_workflow",
+    "step": 1,
+    "label": "started",
+    "state": {"task": "hello world", "progress": 0}
+  }'</span>
+
+<span class="cm"># Resume</span>
+curl https://snapstate.dev/workflows/wf_my_first_workflow/resume \\
+  -H <span class="str">"Authorization: Bearer ${esc(k)}"</span>`;
+}
+
+// HTML-escape helper (prevents XSS if key contains HTML chars)
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Tab switching ───────────────────────────────────────────
+function switchIntegTab(btn, panelId) {
+  document.querySelectorAll('.tabs-head .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ─── Copy helpers ────────────────────────────────────────────
+function copyApiKey(btn) {
+  const k = document.getElementById('api-key-display').textContent;
+  navigator.clipboard.writeText(k).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyCode(btn, preId) {
+  const pre = document.getElementById(preId);
+  const text = pre ? pre.textContent : '';
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── Enter key on form fields ────────────────────────────────
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  const active = document.querySelector('.step-panel.active');
+  if (!active) return;
+  if (active.id === 'step-1') {
+    const fallback = document.getElementById('login-fallback');
+    if (fallback.classList.contains('visible')) handleLogin();
+    else handleSignup();
+  } else if (active.id === 'step-2') {
+    handleVerify();
+  }
+});
+</script>
+</body>
+</html>
