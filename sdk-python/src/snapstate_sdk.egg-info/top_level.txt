@@ -1,2 +1,0 @@
-checkpoint_sdk
-snapstate_sdk

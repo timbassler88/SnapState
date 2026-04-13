@@ -17,3 +17,10 @@ ss-cp.json
 analytics-cp.json
 final-cp.json
 agent.json
+.npmrc
+.pypirc
+*.token.txt
+*token*.txt
+journey-*.json
+snapstate-test/
+sdk-python/src/snapstate_sdk.egg-info/
