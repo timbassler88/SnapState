@@ -7,7 +7,7 @@ RUN npm install
 # Build dashboard
 WORKDIR /app/dashboard
 RUN npm install
-RUN VITE_ADMIN_SECRET=BlackRabbit!(0588) npm run build
+RUN VITE_ADMIN_SECRET='BlackRabbit!(0588)' npm run build
 # Build docs
 WORKDIR /app/docs
 RUN npm install && npm run build
