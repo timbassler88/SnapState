@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapState — Persistent state for AI agent workflows</title>
+  <meta name="description" content="Save, resume, and replay multi-step AI agent workflows. Your agents never lose progress again.">
+  <meta property="og:title" content="SnapState — Persistent state for AI agent workflows">
+  <meta property="og:description" content="Save, resume, and replay multi-step AI agent workflows across sessions, crashes, and agent handoffs.">
+  <meta property="og:url" content="https://snapstate.dev">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%237B6FE8'/></svg>">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0B0B0F;
+      --surface: #13131A;
+      --border: #1E1E2A;
+      --text: #E8E8ED;
+      --dim: #7A7A8E;
+      --accent: #7B6FE8;
+      --accent-hover: #6A5ED6;
+      --green: #4ADE80;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,15,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--dim);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Sections ── */
+    .container { max-width: 1080px; margin: 0 auto; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 100px 24px 80px;
+      text-align: center;
+    }
+    .hero-content { max-width: 720px; margin: 0 auto; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(123,111,232,0.1);
+      border: 1px solid rgba(123,111,232,0.25);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      box-shadow: 0 0 20px rgba(123,111,232,0.12);
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      flex-shrink: 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 62px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+      color: var(--text);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--dim);
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--dim);
+      font-family: 'Satoshi', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, transform 0.12s;
+    }
+    .btn-secondary:hover { border-color: rgba(123,111,232,0.5); color: var(--text); transform: translateY(-1px); }
+
+    .install-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px 10px 18px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: var(--dim);
+    }
+    .install-pill code { color: var(--text); }
+    .install-pill .dollar { color: var(--accent); user-select: none; }
+    .copy-install {
+      background: rgba(123,111,232,0.12);
+      border: 1px solid rgba(123,111,232,0.2);
+      color: var(--accent);
+      font-family: 'Satoshi', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .copy-install:hover { background: rgba(123,111,232,0.22); }
+
+    /* ── Code section ── */
+    .code-section { padding: 64px 24px; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.7px;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--dim);
+      margin-bottom: 40px;
+    }
+
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .code-block:hover {
+      border-color: rgba(123,111,232,0.35);
+      box-shadow: 0 0 28px rgba(123,111,232,0.07);
+    }
+
+    .code-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      padding: 0 4px;
+      background: rgba(255,255,255,0.02);
+    }
+    .code-tab {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--dim);
+      padding: 11px 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
+    }
+    .code-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+    .code-tab:hover:not(.active) { color: var(--text); }
+
+    .code-pane { display: none; padding: 28px 28px; overflow-x: auto; }
+    .code-pane.active { display: block; }
+
+    pre {
+      font-family: 'Fira Code', monospace;
+      font-size: 13.5px;
+      line-height: 1.75;
+      white-space: pre;
+    }
+
+    /* Syntax colors */
+    .kw  { color: #C792EA; }
+    .str { color: #C3E88D; }
+    .fn  { color: #82AAFF; }
+    .cm  { color: #4A5568; font-style: italic; }
+    .nm  { color: #F78C6C; }
+    .pl  { color: #E8E8ED; }
+
+    /* ── Features ── */
+    .features-section { padding: 64px 24px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 22px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(123,111,232,0.3);
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 14px; }
+    .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .feature-desc { font-size: 14px; color: var(--dim); line-height: 1.6; }
+
+    /* ── Pricing ── */
+    .pricing-section { padding: 64px 24px; text-align: center; }
+    .pricing-card {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 48px;
+      max-width: 560px;
+      width: 100%;
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: rgba(74,222,128,0.1);
+      border: 1px solid rgba(74,222,128,0.22);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .pricing-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .pricing-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .pricing-chip {
+      background: rgba(123,111,232,0.08);
+      border: 1px solid rgba(123,111,232,0.18);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    .pricing-noccard { font-size: 13px; color: var(--dim); margin-bottom: 20px; }
+    .pricing-link { font-size: 14px; color: var(--accent); font-weight: 600; transition: opacity 0.15s; }
+    .pricing-link:hover { opacity: 0.75; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      margin-top: 32px;
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--dim);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a, footer a { color: var(--dim); transition: color 0.15s; }
+    .footer-links a:hover, footer a:hover { color: var(--text); }
+
+    /* ── Hero entrance animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content .badge       { animation: fadeUp 0.55s 0.05s ease both; }
+    .hero-content h1           { animation: fadeUp 0.55s 0.12s ease both; }
+    .hero-content .hero-sub    { animation: fadeUp 0.55s 0.18s ease both; }
+    .hero-content .hero-ctas   { animation: fadeUp 0.55s 0.24s ease both; }
+    .hero-content .install-pill{ animation: fadeUp 0.55s 0.30s ease both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 32px 20px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+      .nav-links { gap: 20px; }
+      .hero h1 { letter-spacing: -1px; }
+    }
+    @media (max-width: 420px) {
+      .nav-links .hide-xs { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">SnapState</a>
+    <ul class="nav-links">
+      <li><a href="/docs/">Docs</a></li>
+      <li><a href="/dashboard/">Dashboard</a></li>
+      <li class="hide-xs"><a href="https://github.com/timbassler88/snapstate" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Now in Public Beta
+    </div>
+    <h1>Persistent state for<br>AI agent workflows</h1>
+    <p class="hero-sub">
+      Save, resume, and replay multi-step workflows across sessions, crashes, and agent handoffs. Your agents never lose progress again.
+    </p>
+    <div class="hero-ctas">
+      <a href="/docs/" class="btn-primary">Get Started</a>
+      <a href="https://github.com/timbassler88/snapstate" target="_blank" rel="noopener" class="btn-secondary">View on GitHub</a>
+    </div>
+    <div class="install-pill">
+      <span class="dollar">$</span>
+      <code>npm install snapstate-sdk</code>
+      <button class="copy-install" id="copy-npm" onclick="copyInstall()">Copy</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Code Example ── -->
+<section class="code-section">
+  <div class="container">
+    <div class="section-label">Code</div>
+    <h2 class="section-title">Save and resume in a few lines</h2>
+    <p class="section-sub">Works with JavaScript, Python, and any MCP-compatible agent.</p>
+
+    <div class="code-block">
+      <div class="code-tabs">
+        <button class="code-tab active" onclick="switchTab(this,'js')">JavaScript</button>
+        <button class="code-tab" onclick="switchTab(this,'python')">Python</button>
+      </div>
+
+      <div class="code-pane active" id="pane-js"><pre
+><span class="kw">import</span> { <span class="pl">SnapStateClient</span> } <span class="kw">from</span> <span class="str">'snapstate-sdk'</span>;
+
+<span class="kw">const</span> <span class="pl">client</span> = <span class="kw">new</span> <span class="fn">SnapStateClient</span>({
+  <span class="pl">apiKey</span>: <span class="str">'snp_your_key_here'</span>,
+});
+
+<span class="cm">// Save after each step</span>
+<span class="kw">await</span> <span class="pl">client</span>.<span class="fn">save</span>({
+  <span class="pl">workflowId</span>: <span class="str">'wf_research'</span>,
+  <span class="pl">step</span>: <span class="nm">1</span>,
+  <span class="pl">label</span>: <span class="str">'sources_gathered'</span>,
+  <span class="pl">state</span>: { <span class="pl">sources</span>: [<span class="str">'arxiv.org'</span>, <span class="str">'github.com'</span>] }
+});
+
+<span class="cm">// Resume where you left off</span>
+<span class="kw">const</span> <span class="pl">resumed</span> = <span class="kw">await</span> <span class="pl">client</span>.<span class="fn">resume</span>(<span class="str">'wf_research'</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="pl">resumed</span>.<span class="pl">latestCheckpoint</span>.<span class="pl">state</span>);</pre></div>
+
+      <div class="code-pane" id="pane-python"><pre
+><span class="kw">from</span> <span class="pl">snapstate_sdk</span> <span class="kw">import</span> <span class="fn">SnapStateClient</span>
+
+<span class="pl">client</span> = <span class="fn">SnapStateClient</span>(<span class="pl">api_key</span>=<span class="str">"snp_your_key_here"</span>)
+
+<span class="cm"># Save after each step</span>
+<span class="pl">client</span>.<span class="fn">save</span>(
+    <span class="pl">workflow_id</span>=<span class="str">"wf_research"</span>,
+    <span class="pl">step</span>=<span class="nm">1</span>,
+    <span class="pl">label</span>=<span class="str">"sources_gathered"</span>,
+    <span class="pl">state</span>={<span class="str">"sources"</span>: [<span class="str">"arxiv.org"</span>, <span class="str">"github.com"</span>]}
+)
+
+<span class="cm"># Resume where you left off</span>
+<span class="pl">resumed</span> = <span class="pl">client</span>.<span class="fn">resume</span>(<span class="str">"wf_research"</span>)
+<span class="fn">print</span>(<span class="pl">resumed</span>.<span class="pl">latest_checkpoint</span>.<span class="pl">state</span>)</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section class="features-section">
+  <div class="container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Built for agents</h2>
+    <p class="section-sub">Everything your workflows need to be resilient.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Checkpoint Save</div>
+        <div class="feature-desc">Save full workflow state after each step. JSON payloads up to 1 MB with automatic diff tracking and ETags for concurrency control.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏮</div>
+        <div class="feature-title">Resume &amp; Replay</div>
+        <div class="feature-desc">Resume from the latest checkpoint or replay the entire workflow history step by step. Agents pick up exactly where they left off.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">Agent Identity</div>
+        <div class="feature-desc">Tag checkpoints with agent IDs. Track which agent did what across multi-agent workflows with a full audit trail.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Analytics</div>
+        <div class="feature-desc">Built-in workflow stats, failure pattern detection, and per-agent performance metrics. Understand exactly where workflows break.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔌</div>
+        <div class="feature-title">MCP Server</div>
+        <div class="feature-desc">Works with Claude Desktop and Cline out of the box. Your AI assistant gets persistent memory without writing integration code.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Usage-Based Pricing</div>
+        <div class="feature-desc">Generous free tier: 10k writes, 1 GB storage, 5k resumes per month. Pay only for what you use beyond that.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ── -->
+<section class="pricing-section">
+  <div class="container">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title" style="margin-bottom:8px">Start for free</h2>
+    <p class="section-sub" style="margin-bottom:36px">No credit card required. Upgrade when you scale.</p>
+
+    <div class="pricing-card">
+      <div class="pricing-badge">Free Tier</div>
+      <h3>Everything you need to get started</h3>
+      <div class="pricing-chips">
+        <span class="pricing-chip">10,000 writes/mo</span>
+        <span class="pricing-chip">1 GB storage</span>
+        <span class="pricing-chip">5,000 resumes/mo</span>
+        <span class="pricing-chip">1,000 replays/mo</span>
+      </div>
+      <p class="pricing-noccard">No credit card required</p>
+      <a href="/docs/#/pricing" class="pricing-link">See full pricing →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 SnapState</span>
+    <a href="mailto:hello@snapstate.dev">hello@snapstate.dev</a>
+    <div class="footer-links">
+      <a href="/docs/">Docs</a>
+      <a href="https://github.com/timbassler88/snapstate" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.npmjs.com/package/snapstate-sdk" target="_blank" rel="noopener">npm</a>
+      <a href="https://pypi.org/project/snapstate-sdk/" target="_blank" rel="noopener">PyPI</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function switchTab(btn, lang) {
+    document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.code-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pane-' + lang).classList.add('active');
+  }
+
+  function copyInstall() {
+    navigator.clipboard.writeText('npm install snapstate-sdk').then(() => {
+      const btn = document.getElementById('copy-npm');
+      const prev = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = prev; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

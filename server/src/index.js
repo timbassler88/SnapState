@@ -42,6 +42,12 @@ export async function buildApp(opts = {}) {
     ...opts,
   });
 
+  // Landing page
+  const landingHtml = fs.readFileSync(path.join(__dirname, 'landing.html'), 'utf8');
+  fastify.get('/', (request, reply) => {
+    reply.type('text/html').send(landingHtml);
+  });
+
   // Attach request ID as X-Request-Id on all responses
   fastify.addHook('onSend', async (request, reply) => {
     reply.header('X-Request-Id', request.id);
