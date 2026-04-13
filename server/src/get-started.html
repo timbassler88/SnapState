@@ -753,6 +753,25 @@ cd snapstate/mcp-server &amp;&amp; npm install</pre>
 
       </div><!-- /tabs-wrap -->
 
+      <!-- Agent system prompt -->
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Make your agent use SnapState automatically</p>
+        <p style="font-size:13px;color:var(--dim);margin-bottom:10px;line-height:1.6;">Add this to your agent's system prompt — works with Claude, GPT, or any LLM:</p>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-lang">System Prompt</span>
+            <button class="code-copy-btn" onclick="copyCode(this,'code-sysprompt')">Copy</button>
+          </div>
+          <pre id="code-sysprompt" style="white-space:pre-wrap;word-break:break-word;">You have access to SnapState for persistent workflow state.
+At the start of every task, call resume_workflow to check for prior state.
+After each major step, call save_checkpoint with your current progress.
+Save everything needed to continue without repeating work.</pre>
+        </div>
+        <p style="font-size:13px;margin-top:10px;">
+          <a href="/docs/#/guides/integration" style="color:var(--accent);">See the full integration guide →</a>
+        </p>
+      </div>
+
       <!-- Bottom links -->
       <div class="bottom-links">
         <a href="/docs/">Read the full documentation →</a>

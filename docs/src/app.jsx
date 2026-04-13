@@ -7,6 +7,7 @@ import { JsSdk } from './pages/JsSdk.jsx';
 import { PythonSdk } from './pages/PythonSdk.jsx';
 import { McpSetup } from './pages/McpSetup.jsx';
 import { AgentIdentity } from './pages/AgentIdentity.jsx';
+import { AgentIntegration } from './pages/AgentIntegration.jsx';
 import { Webhooks } from './pages/Webhooks.jsx';
 import { Pricing } from './pages/Pricing.jsx';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/sdk/python" element={<PythonSdk />} />
           <Route path="/guides/mcp" element={<McpSetup />} />
           <Route path="/guides/agents" element={<AgentIdentity />} />
+          <Route path="/guides/integration" element={<AgentIntegration />} />
           <Route path="/guides/webhooks" element={<Webhooks />} />
           <Route path="/pricing" element={<Pricing />} />
         </Routes>

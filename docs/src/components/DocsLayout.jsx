@@ -22,6 +22,7 @@ const NAV = [
     items: [
       { label: 'MCP Setup', to: '/guides/mcp' },
       { label: 'Agent Identity', to: '/guides/agents' },
+      { label: 'Agent Integration', to: '/guides/integration' },
       { label: 'Webhooks', to: '/guides/webhooks' },
     ],
   },
