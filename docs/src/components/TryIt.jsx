@@ -14,7 +14,7 @@ const ENDPOINTS = [
 ];
 
 export function TryIt() {
-  const [baseUrl, setBaseUrl] = useState('http://localhost:3000');
+  const [baseUrl, setBaseUrl] = useState('https://snapstate.dev');
   const [apiKey, setApiKey] = useState('');
   const [endpointIdx, setEndpointIdx] = useState(0);
   const [customPath, setCustomPath] = useState('');
@@ -71,7 +71,7 @@ export function TryIt() {
               value={baseUrl}
               onChange={(e) => setBaseUrl(e.target.value)}
               className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="http://localhost:3000"
+              placeholder="https://snapstate.dev"
             />
           </div>
           <div>

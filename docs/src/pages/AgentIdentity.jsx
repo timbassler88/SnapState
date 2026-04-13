@@ -174,7 +174,7 @@ export function AgentIdentity() {
 
       <H2 id="analytics">Querying agent analytics</H2>
       <CodeBlock language="bash" code={`# Per-agent performance over the last 30 days
-curl http://localhost:3000/analytics/agents \\
+curl https://snapstate.dev/analytics/agents \\
   -H "Authorization: Bearer snp_..."
 
 # Response includes per-agent:

@@ -6,7 +6,7 @@
  *   node examples/basic-agent.js
  *
  * Prerequisites:
- *   - SnapState service running at http://localhost:3000
+ *   - SnapState service running at https://snapstate.dev
  *   - A valid API key in the SNAPSTATE_API_KEY env var
  */
 
@@ -17,7 +17,7 @@ const WORKFLOW_ID = `wf_research_${Date.now()}`;
 
 const cp = new SnapStateClient({
   apiKey: API_KEY,
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://snapstate.dev',
 });
 
 async function runAgent() {

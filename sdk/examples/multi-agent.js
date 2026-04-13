@@ -14,7 +14,7 @@ import { SnapStateClient } from '@snapstate/sdk';
 
 const cp = new SnapStateClient({
   apiKey: process.env.SNAPSTATE_API_KEY ?? 'snp_your_key_here',
-  baseUrl: process.env.SNAPSTATE_API_URL ?? 'http://localhost:3000',
+  baseUrl: process.env.SNAPSTATE_API_URL ?? 'https://snapstate.dev',
 });
 
 const WORKFLOW_ID = `wf_collab_${Date.now()}`;

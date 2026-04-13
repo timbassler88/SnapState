@@ -33,7 +33,7 @@ await client.deleteWebhook(webhook.webhookId);`,
   {
     label: 'curl',
     language: 'bash',
-    code: `curl -X POST http://localhost:3000/webhooks \\
+    code: `curl -X POST https://snapstate.dev/webhooks \\
   -H "Authorization: Bearer snp_..." \\
   -H "Content-Type: application/json" \\
   -d '{

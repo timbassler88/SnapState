@@ -69,7 +69,7 @@ export class SnapStateClient {
   /**
    * @param {{ apiKey: string, baseUrl?: string }} opts
    */
-  constructor({ apiKey, baseUrl = 'http://localhost:3000' }) {
+  constructor({ apiKey, baseUrl = 'https://snapstate.dev' }) {
     if (!apiKey) throw new SnapStateError('apiKey is required', 'INVALID_CONFIG', 0);
     /** @private */
     this._apiKey = apiKey;

@@ -51,7 +51,7 @@ npm install`} />
       "command": "node",
       "args": ["/absolute/path/to/mcp-server/src/index.js"],
       "env": {
-        "SNAPSTATE_API_URL": "http://localhost:3000",
+        "SNAPSTATE_API_URL": "https://snapstate.dev",
         "SNAPSTATE_API_KEY": "snp_your_key_here"
       }
     }
@@ -69,7 +69,7 @@ npm install`} />
   "command": "node",
   "args": ["/absolute/path/to/mcp-server/src/index.js"],
   "env": {
-    "SNAPSTATE_API_URL": "http://localhost:3000",
+    "SNAPSTATE_API_URL": "https://snapstate.dev",
     "SNAPSTATE_API_KEY": "snp_your_key_here"
   }
 }`} />

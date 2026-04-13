@@ -1,5 +1,5 @@
 {
-  "name": "@snapstate/sdk",
+  "name": "snapstate-sdk",
   "version": "1.0.0",
   "description": "Lightweight zero-dependency SDK for SnapState",
   "type": "module",

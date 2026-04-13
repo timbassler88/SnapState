@@ -7,7 +7,7 @@
 
 import 'dotenv/config';
 
-const API_URL = (process.env.SNAPSTATE_API_URL ?? 'http://localhost:3000').replace(/\/$/, '');
+const API_URL = (process.env.SNAPSTATE_API_URL ?? 'https://snapstate.dev').replace(/\/$/, '');
 const API_KEY = process.env.SNAPSTATE_API_KEY ?? '';
 
 async function callApi(method, path, body) {

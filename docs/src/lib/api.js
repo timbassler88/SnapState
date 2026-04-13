@@ -3,7 +3,7 @@
  */
 
 export async function callApi({ baseUrl, apiKey, method, path, body }) {
-  const url = `${(baseUrl ?? 'http://localhost:3000').replace(/\/$/, '')}${path}`;
+  const url = `${(baseUrl ?? 'https://snapstate.dev').replace(/\/$/, '')}${path}`;
 
   const headers = { 'Content-Type': 'application/json' };
   if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;

@@ -40,7 +40,7 @@ const CLAUDE_DESKTOP_CONFIG_EXAMPLE = {
       command: 'node',
       args: ['./mcp-server/src/index.js'],
       env: {
-        SNAPSTATE_API_URL: 'http://localhost:3000',
+        SNAPSTATE_API_URL: 'https://snapstate.dev',
         SNAPSTATE_API_KEY: 'snp_your_api_key_here',
       },
     },

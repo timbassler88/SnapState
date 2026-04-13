@@ -42,13 +42,13 @@ npm run migrate
 ```bash
 npm start &
 
-curl -X POST http://localhost:3000/admin/accounts \
+curl -X POST https://snapstate.dev/admin/accounts \
   -H "Authorization: Bearer admin_dev_secret_change_me" \
   -H "Content-Type: application/json" \
   -d '{"email": "you@example.com", "name": "Your Name"}'
 
 # Generate API key (save it — shown once)
-curl -X POST http://localhost:3000/admin/accounts/1/keys \
+curl -X POST https://snapstate.dev/admin/accounts/1/keys \
   -H "Authorization: Bearer admin_dev_secret_change_me" \
   -H "Content-Type: application/json" \
   -d '{"label": "development"}'
@@ -130,7 +130,7 @@ All responses include `X-Request-Id` (UUID v4).
 **Save a checkpoint**
 
 ```bash
-curl -X POST http://localhost:3000/checkpoints \
+curl -X POST https://snapstate.dev/checkpoints \
   -H "Authorization: Bearer $SNAPSTATE_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -174,10 +174,10 @@ Optional headers: `X-Checkpoint-TTL: 3600`, `If-Match: "<etag>"` (optimistic con
 ### Health endpoints
 
 ```bash
-curl http://localhost:3000/health
+curl https://snapstate.dev/health
 # { status, version, uptime_seconds, redis, postgres, r2, timestamp }
 
-curl http://localhost:3000/ready
+curl https://snapstate.dev/ready
 # 200 { status: "ready" } or 503 { status: "not_ready", redis, postgres }
 ```
 
@@ -215,7 +215,7 @@ npm install @snapstate/sdk
 ```javascript
 import { SnapStateClient } from '@snapstate/sdk';
 
-const cp = new SnapStateClient({ apiKey: 'snp_...', baseUrl: 'http://localhost:3000' });
+const cp = new SnapStateClient({ apiKey: 'snp_...', baseUrl: 'https://snapstate.dev' });
 
 // Register an agent (upsert — safe to call every startup)
 await cp.registerAgent({
@@ -246,7 +246,7 @@ pip install snapstate-sdk
 ```python
 from snapstate_sdk import SnapStateClient
 
-with SnapStateClient(api_key="snp_...", base_url="http://localhost:3000") as client:
+with SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev") as client:
     result = client.save(workflow_id="wf_001", step=1, state={"query": "hello"}, agent_id="research-bot")
     resumed = client.resume("wf_001")
     history = client.replay("wf_001", from_step=1)
@@ -275,7 +275,7 @@ cd mcp-server && npm install
       "command": "node",
       "args": ["/absolute/path/to/mcp-server/src/index.js"],
       "env": {
-        "SNAPSTATE_API_URL": "http://localhost:3000",
+        "SNAPSTATE_API_URL": "https://snapstate.dev",
         "SNAPSTATE_API_KEY": "snp_your_key_here"
       }
     }

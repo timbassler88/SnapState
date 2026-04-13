@@ -25,7 +25,7 @@ export function JsSdk() {
 
 const client = new SnapStateClient({
   apiKey: process.env.SNAPSTATE_API_KEY, // required
-  baseUrl: 'http://localhost:3000',        // optional, default shown
+  baseUrl: 'https://snapstate.dev',        // optional, default shown
 });`} />
 
       <H2 id="save">save()</H2>

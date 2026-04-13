@@ -6,7 +6,7 @@ Supports both synchronous and asynchronous usage patterns.
 Usage (sync):
     from snapstate_sdk import SnapStateClient
 
-    client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
+    client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
 
     result = client.save(
         workflow_id="wf_001",
@@ -26,7 +26,7 @@ Usage (async):
     from snapstate_sdk import SnapStateClient
 
     async def main():
-        client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
+        client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
         result = await client.async_save(workflow_id="wf_001", step=1, state={})
         await client.async_close()
 
@@ -69,7 +69,7 @@ class SnapStateClient:
     api_key : str
         Your API key (begins with ``snp_``).
     base_url : str
-        Base URL for SnapState. Defaults to ``http://localhost:3000``.
+        Base URL for SnapState. Defaults to ``https://snapstate.dev``.
     timeout : float
         HTTP request timeout in seconds. Defaults to 30.0.
     max_retries : int
@@ -80,7 +80,7 @@ class SnapStateClient:
     def __init__(
         self,
         api_key: str,
-        base_url: str = "http://localhost:3000",
+        base_url: str = "https://snapstate.dev",
         timeout: float = 30.0,
         max_retries: int = 3,
         _sync_transport: Optional[httpx.BaseTransport] = None,

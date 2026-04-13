@@ -57,7 +57,7 @@ const SAVE_TABS = [
 
 const client = new SnapStateClient({
   apiKey: 'snp_your_key_here',
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://snapstate.dev',
 });
 
 // Save state after completing a step
@@ -82,7 +82,7 @@ console.log('ETag:', result.etag);`,
 
 client = SnapStateClient(
     api_key="snp_your_key_here",
-    base_url="http://localhost:3000",
+    base_url="https://snapstate.dev",
 )
 
 result = client.save(

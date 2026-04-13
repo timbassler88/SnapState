@@ -24,7 +24,7 @@ export function PythonSdk() {
 
 client = SnapStateClient(
     api_key="snp_your_key_here",
-    base_url="http://localhost:3000",
+    base_url="https://snapstate.dev",
     timeout=30.0,    # optional, default shown
     max_retries=3,   # optional — retries on 429
 )
@@ -57,7 +57,7 @@ client.close()`} />
 from snapstate_sdk import SnapStateClient
 
 async def main():
-    client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
+    client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
 
     result = await client.async_save(
         workflow_id="wf_001",

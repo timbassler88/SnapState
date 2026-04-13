@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: snapstate-sdk
+Version: 1.0.0
+Summary: Python SDK for the SnapState workflow state persistence service
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.25.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+
 # snapstate-sdk (Python)
 
 Python SDK for the [Checkpoint Service](https://github.com/your-org/snapstate) — a workflow state persistence API that lets AI agents save and resume multi-step work across interruptions, crashes, and handoffs between agents.
@@ -17,7 +32,7 @@ from snapstate_sdk import SnapStateClient
 
 client = SnapStateClient(
     api_key="snp_your_key_here",
-    base_url="https://snapstate.dev",
+    base_url="http://localhost:3000",
 )
 
 # Save state after each step
@@ -51,7 +66,7 @@ import asyncio
 from snapstate_sdk import SnapStateClient
 
 async def main():
-    client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
+    client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
 
     result = await client.async_save(
         workflow_id="wf_001",
@@ -85,7 +100,7 @@ async with SnapStateClient(api_key="snp_...") as client:
 Register your agent once at startup, then tag checkpoints with `agent_id`:
 
 ```python
-client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
+client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
 
 # Register agent identity
 client.register_agent(
@@ -124,7 +139,7 @@ from snapstate_sdk.errors import (
     SnapStateError,  # base class
 )
 
-client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
+client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
 
 try:
     resumed = client.resume("wf_missing")
@@ -160,7 +175,7 @@ except SnapStateError as e:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `api_key` | `str` | required | API key starting with `snp_` |
-| `base_url` | `str` | `https://snapstate.dev` | SnapState base URL |
+| `base_url` | `str` | `http://localhost:3000` | Checkpoint Service base URL |
 | `timeout` | `float` | `30.0` | Request timeout in seconds |
 | `max_retries` | `int` | `3` | Retry attempts on 429 before raising `RateLimitError` |
 

@@ -70,7 +70,7 @@ export function ApiReference() {
           { status: 413, code: 'PAYLOAD_TOO_LARGE', description: 'State exceeds 1 MB limit' },
           { status: 429, code: 'RATE_LIMITED', description: 'Too many requests — back off and retry' },
         ]}
-        curl={`curl -X POST http://localhost:3000/checkpoints \\
+        curl={`curl -X POST https://snapstate.dev/checkpoints \\
   -H "Authorization: Bearer snp_..." \\
   -H "Content-Type: application/json" \\
   -d '{"workflow_id":"wf_001","step":1,"state":{"progress":0}}'`}
@@ -85,7 +85,7 @@ export function ApiReference() {
           { status: 401, code: 'UNAUTHORIZED', description: 'Invalid or missing API key' },
           { status: 404, code: 'NOT_FOUND', description: 'Checkpoint not found' },
         ]}
-        curl={`curl http://localhost:3000/checkpoints/cp_wf_001_0001 \\
+        curl={`curl https://snapstate.dev/checkpoints/cp_wf_001_0001 \\
   -H "Authorization: Bearer snp_..."`}
       />
 
@@ -99,7 +99,7 @@ export function ApiReference() {
         errors={[
           { status: 404, code: 'NOT_FOUND', description: 'No checkpoints found for this workflow' },
         ]}
-        curl={`curl http://localhost:3000/workflows/wf_001/resume \\
+        curl={`curl https://snapstate.dev/workflows/wf_001/resume \\
   -H "Authorization: Bearer snp_..."`}
       />
 
@@ -113,7 +113,7 @@ export function ApiReference() {
           { field: 'limit', type: 'integer (query)', required: false, description: 'Max results (default 100, max 1000)' },
         ]}
         response={{ workflow_id: 'wf_001', checkpoints: [{ step: 1 }, { step: 2 }], total: 2, has_more: false }}
-        curl={`curl "http://localhost:3000/workflows/wf_001/replay?limit=50" \\
+        curl={`curl "https://snapstate.dev/workflows/wf_001/replay?limit=50" \\
   -H "Authorization: Bearer snp_..."`}
       />
 
@@ -135,7 +135,7 @@ export function ApiReference() {
           { status: 400, code: 'MAX_AGENTS_REACHED', description: 'Account agent limit reached (default: 50)' },
           { status: 400, code: 'VALIDATION_ERROR', description: 'Invalid agent_id format' },
         ]}
-        curl={`curl -X POST http://localhost:3000/agents \\
+        curl={`curl -X POST https://snapstate.dev/agents \\
   -H "Authorization: Bearer snp_..." \\
   -H "Content-Type: application/json" \\
   -d '{"agent_id":"research-bot","name":"Research Bot","capabilities":["web_search"]}'`}
@@ -151,7 +151,7 @@ export function ApiReference() {
           {...ep}
           headers={[{ name: 'Authorization', required: true, description: 'Bearer snp_...' }]}
           errors={[{ status: 404, code: 'AGENT_NOT_FOUND', description: 'Agent not found or belongs to another account' }]}
-          curl={`curl http://localhost:3000${ep.path.replace(':agent_id', 'research-bot')} \\\n  -H "Authorization: Bearer snp_..."`}
+          curl={`curl https://snapstate.dev${ep.path.replace(':agent_id', 'research-bot')} \\\n  -H "Authorization: Bearer snp_..."`}
         />
       ))}
 
@@ -166,7 +166,7 @@ export function ApiReference() {
         <EndpointCard key={ep.path}
           {...ep}
           headers={[{ name: 'Authorization', required: true, description: 'Bearer snp_...' }]}
-          curl={`curl http://localhost:3000${ep.path.replace(':workflow_id', 'wf_001')} \\\n  -H "Authorization: Bearer snp_..."`}
+          curl={`curl https://snapstate.dev${ep.path.replace(':workflow_id', 'wf_001')} \\\n  -H "Authorization: Bearer snp_..."`}
         />
       ))}
 
@@ -182,7 +182,7 @@ export function ApiReference() {
           { field: 'secret', type: 'string', required: false, description: 'HMAC signing secret for request verification' },
         ]}
         response={{ webhook_id: 'wh_abc123', url: 'https://example.com/hook', events: ['checkpoint.saved'], created_at: '2026-04-11T00:00:00Z' }}
-        curl={`curl -X POST http://localhost:3000/webhooks \\
+        curl={`curl -X POST https://snapstate.dev/webhooks \\
   -H "Authorization: Bearer snp_..." \\
   -H "Content-Type: application/json" \\
   -d '{"url":"https://example.com/hook","events":["checkpoint.saved"]}'`}
@@ -193,7 +193,7 @@ export function ApiReference() {
         description="Remove a webhook registration."
         headers={[{ name: 'Authorization', required: true, description: 'Bearer snp_...' }]}
         errors={[{ status: 404, code: 'NOT_FOUND', description: 'Webhook not found' }]}
-        curl={`curl -X DELETE http://localhost:3000/webhooks/wh_abc123 \\
+        curl={`curl -X DELETE https://snapstate.dev/webhooks/wh_abc123 \\
   -H "Authorization: Bearer snp_..."`}
       />
 

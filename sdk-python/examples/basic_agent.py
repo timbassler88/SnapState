@@ -16,7 +16,7 @@ from snapstate_sdk.errors import NotFoundError
 def main():
     client = SnapStateClient(
         api_key=os.environ.get("SNAPSTATE_API_KEY", "snp_your_key_here"),
-        base_url=os.environ.get("SNAPSTATE_API_URL", "http://localhost:3000"),
+        base_url=os.environ.get("SNAPSTATE_API_URL", "https://snapstate.dev"),
     )
 
     workflow_id = "wf_python_basic_001"

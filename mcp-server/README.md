@@ -26,7 +26,7 @@ cd mcp-server && npm install
 ### Environment variables
 
 ```bash
-SNAPSTATE_API_URL=http://localhost:3000   # SnapState URL
+SNAPSTATE_API_URL=https://snapstate.dev   # SnapState URL
 SNAPSTATE_API_KEY=snp_your_key_here      # Valid API key
 ```
 
@@ -69,7 +69,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
       "command": "node",
       "args": ["/absolute/path/to/snapstate/mcp-server/src/index.js"],
       "env": {
-        "SNAPSTATE_API_URL": "http://localhost:3000",
+        "SNAPSTATE_API_URL": "https://snapstate.dev",
         "SNAPSTATE_API_KEY": "snp_your_api_key_here"
       }
     }
@@ -87,7 +87,7 @@ In Cline settings → MCP Servers → Add:
     "command": "node",
     "args": ["/absolute/path/to/mcp-server/src/index.js"],
     "env": {
-      "SNAPSTATE_API_URL": "http://localhost:3000",
+      "SNAPSTATE_API_URL": "https://snapstate.dev",
       "SNAPSTATE_API_KEY": "snp_your_api_key_here"
     }
   }
@@ -103,7 +103,7 @@ In Cline settings → MCP Servers → Add:
       "command": "npx",
       "args": ["-y", "@snapstate/mcp-server"],
       "env": {
-        "SNAPSTATE_API_URL": "http://localhost:3000",
+        "SNAPSTATE_API_URL": "https://snapstate.dev",
         "SNAPSTATE_API_KEY": "snp_your_api_key_here"
       }
     }

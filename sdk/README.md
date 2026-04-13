@@ -17,7 +17,7 @@ import { SnapStateClient } from '@snapstate/sdk';
 
 const cp = new SnapStateClient({
   apiKey: 'snp_abc123...',
-  baseUrl: 'http://localhost:3000',   // or your production URL
+  baseUrl: 'https://snapstate.dev',   // or your production URL
 });
 
 // Save a checkpoint
@@ -57,7 +57,7 @@ await cp.deleteWebhook(hook.webhookId);
 | Param | Type | Default | Description |
 |-------|------|---------|-------------|
 | `apiKey` | `string` | required | API key prefixed with `snp_` |
-| `baseUrl` | `string` | `http://localhost:3000` | Service base URL |
+| `baseUrl` | `string` | `https://snapstate.dev` | Service base URL |
 
 ### `cp.save(params)`
 

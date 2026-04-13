@@ -8,7 +8,7 @@
  *   - get_workflow_history
  *
  * Usage:
- *   SNAPSTATE_API_URL=http://localhost:3000 \
+ *   SNAPSTATE_API_URL=https://snapstate.dev \
  *   SNAPSTATE_API_KEY=snp_... \
  *   node src/index.js
  *

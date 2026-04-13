@@ -5,7 +5,7 @@ Quick start::
 
     from snapstate_sdk import SnapStateClient
 
-    client = SnapStateClient(api_key="snp_...", base_url="http://localhost:3000")
+    client = SnapStateClient(api_key="snp_...", base_url="https://snapstate.dev")
 
     result = client.save(workflow_id="wf_001", step=1, state={"progress": 0})
     resumed = client.resume("wf_001")
