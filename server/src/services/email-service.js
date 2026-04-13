@@ -1,28 +1,30 @@
-import nodemailer from 'nodemailer';
 import { config } from '../config.js';
 
-function createTransport() {
-  return nodemailer.createTransport({
-    host: config.smtp.host,
-    port: config.smtp.port,
-    secure: config.smtp.port === 465,
-    auth: config.smtp.user
-      ? { user: config.smtp.user, pass: config.smtp.pass }
-      : undefined,
-    // For Mailpit dev server — skip TLS verification
-    tls: { rejectUnauthorized: false },
-  });
-}
-
 async function send({ to, subject, text, html }) {
-  const transport = createTransport();
-  await transport.sendMail({
-    from: config.smtp.from,
-    to,
-    subject,
-    text,
-    html,
+  const apiKey = config.smtp.pass; // Resend API key (re_...)
+  const from = config.smtp.from;
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      subject,
+      text,
+      html,
+    }),
   });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(`Resend API error: ${response.status} - ${JSON.stringify(error)}`);
+  }
+
+  return response.json();
 }
 
 /**
