@@ -975,39 +975,29 @@ async function handleVerify() {
 
 // ─── Step 3: API Key + Code ───────────────────────────────────
 async function loadApiKeyAndEnterStep3() {
-  // Try to get existing keys
+  // POST /account/keys is the only endpoint that returns the full raw key.
+  // GET /account/keys only returns key_prefix (by design — keys are hashed at rest).
+  // So we always create a fresh key here to guarantee we can display it.
   try {
-    const res = await fetch('/self/keys', {
-      headers: { 'Authorization': 'Bearer ' + jwtToken },
+    const res = await fetch('/account/keys', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + jwtToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ label: 'Default' }),
     });
-    if (res.ok) {
-      const data = await res.json();
-      // data may be an array or { keys: [...] }
-      const keys = Array.isArray(data) ? data : (data.keys || data.data || []);
-      if (keys.length > 0) {
-        // API keys are typically returned with a `key` or `api_key` field
-        const k = keys[0];
-        apiKey = k.key || k.api_key || k.token || k.value || '';
-      }
+    const data = await res.json().catch(() => ({}));
+    if ((res.status === 201 || res.ok) && data.api_key) {
+      apiKey = data.api_key;
+    } else if (data.code === 'MAX_KEYS_REACHED') {
+      // Account already has max keys — we can't show the full value.
+      // Fall through; renderStep3 will show a prompt to check the dashboard.
+      apiKey = '';
     }
-  } catch { /* fall through */ }
-
-  // If no key retrieved, create one
-  if (!apiKey) {
-    try {
-      const res = await fetch('/self/keys', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + jwtToken,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: 'Default' }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        apiKey = data.key || data.api_key || data.token || data.value || '';
-      }
-    } catch { /* fall through */ }
+  } catch {
+    // Network error — fall through, renderStep3 handles the empty case.
+    apiKey = '';
   }
 
   renderStep3();
@@ -1015,8 +1005,15 @@ async function loadApiKeyAndEnterStep3() {
 }
 
 function renderStep3() {
-  const k = apiKey || 'snp_your_key_here';
-  document.getElementById('api-key-display').textContent = k;
+  const k = apiKey;
+  const keyDisplay = document.getElementById('api-key-display');
+
+  if (!k) {
+    // MAX_KEYS_REACHED or network error — can't show the raw key
+    keyDisplay.innerHTML = '<span style="color:var(--dim);font-style:italic">Key limit reached — <a href="/dashboard/" style="color:var(--accent);text-decoration:underline">view your keys in the dashboard</a></span>';
+  } else {
+    keyDisplay.textContent = k;
+  }
 
   // JavaScript code
   document.getElementById('code-js').innerHTML = renderJs(k);
