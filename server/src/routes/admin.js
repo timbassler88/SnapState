@@ -1,5 +1,5 @@
 import { adminAuthMiddleware } from '../middleware/admin-auth.js';
-import { checkRedisHealth } from '../store/redis.js';
+import { checkRedisHealth, getRedis } from '../store/redis.js';
 import { checkPostgresHealth, getPool } from '../store/postgres.js';
 import { checkR2Health } from '../store/r2.js';
 import { analyticsService } from '../services/analytics-service.js';
@@ -164,5 +164,47 @@ export async function adminRoutes(fastify) {
     const days = Math.min(90, Math.max(1, parseInt(request.query.days ?? '7', 10)));
     const patterns = await analyticsService.getFailurePatterns(null, days);
     return reply.send(patterns);
+  });
+
+  /**
+   * DELETE /admin/reset
+   * Truncates all data from every table and flushes Redis checkpoint/auth-cache keys.
+   * Keeps the schema intact. FOR DEVELOPMENT/TESTING ONLY.
+   */
+  fastify.delete('/reset', async (request, reply) => {
+    const pool = getPool();
+
+    const tables = [
+      'usage_events',
+      'usage_daily',
+      'api_keys',
+      'agents',
+      'workflow_errors',
+      'workflow_stats',
+      'archived_workflows',
+      'sessions',
+      'accounts',
+    ];
+
+    // Truncate in declared order; CASCADE handles any remaining FK references.
+    await pool.query(`
+      TRUNCATE ${tables.join(', ')} RESTART IDENTITY CASCADE
+    `);
+
+    // Flush Redis keys matching checkpoint and workflow prefixes.
+    const redis = getRedis();
+    for (const pattern of ['wf:*', 'cp_*', 'auth_cache:*']) {
+      let cursor = '0';
+      do {
+        const [nextCursor, keys] = await redis.scan(cursor, 'MATCH', pattern, 'COUNT', 200);
+        cursor = nextCursor;
+        if (keys.length > 0) await redis.del(...keys);
+      } while (cursor !== '0');
+    }
+
+    return reply.send({
+      message: 'All data reset',
+      tables_cleared: tables,
+    });
   });
 }
