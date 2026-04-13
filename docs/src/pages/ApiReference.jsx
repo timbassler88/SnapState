@@ -17,7 +17,7 @@ function P({ children }) {
 }
 
 const AUTH_EXAMPLE = `# All requests require an API key in the Authorization header
-curl https://your-server.com/checkpoints \\
+curl https://snapstate.dev/checkpoints \\
   -H "Authorization: Bearer snp_your_key_here"`;
 
 export function ApiReference() {

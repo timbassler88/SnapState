@@ -34,7 +34,7 @@ const SIGNUP_TABS = [
   {
     label: 'curl',
     language: 'bash',
-    code: `curl -X POST https://your-checkpoint-server.com/auth/signup \\
+    code: `curl -X POST https://snapstate.dev/auth/signup \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "you@example.com",

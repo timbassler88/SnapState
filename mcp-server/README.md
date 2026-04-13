@@ -52,7 +52,7 @@ For deploying as a shared service that multiple agents connect to remotely.
 PORT=3001 node src/transport.js
 ```
 
-Agents connect to `http://your-server:3001/sse` and post messages to `http://your-server:3001/message?sessionId=...`.
+Agents connect to `http://your-mcp-host:3001/sse` and post messages to `http://your-mcp-host:3001/message?sessionId=...`.
 
 ---
 
