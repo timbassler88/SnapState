@@ -1,6 +1,6 @@
 {
   "name": "snapstate-sdk",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Lightweight zero-dependency SDK for SnapState",
   "type": "module",
   "main": "./dist/index.cjs",
