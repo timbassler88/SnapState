@@ -1,5 +1,6 @@
 {
   "name": "snapstate-sdk",
+  "mcpName": "io.github.timbassler88/snapstate",
   "version": "1.0.2",
   "description": "Lightweight zero-dependency SDK for SnapState",
   "type": "module",

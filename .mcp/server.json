@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+  "name": "io.github.timbassler88/snapstate",
+  "description": "Persistent state for AI agent workflows. Save, resume, and replay multi-step workflows across sessions, crashes, and agent handoffs.",
+  "version": "1.0.2",
+  "repository": {
+    "url": "https://github.com/timbassler88/snapstate",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registry_type": "npm",
+      "identifier": "snapstate-sdk",
+      "version": "1.0.2"
+    }
+  ]
+}

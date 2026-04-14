@@ -24,3 +24,9 @@ agent.json
 journey-*.json
 snapstate-test/
 sdk-python/src/snapstate_sdk.egg-info/
+.mcpregistry_github_token
+mcp-publisher.exe
+mcp-publisher.tar.gz
+mcp-publisher-latest.tar.gz
+mcp-publisher*.tar.gz
+.mcpregistry_registry_token

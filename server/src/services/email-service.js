@@ -74,6 +74,44 @@ function buildEmailHtml(content) {
 
 export const emailService = {
   /**
+   * Notify the site owner whenever a new account is created.
+   * Fire-and-forget — caller should .catch() and log.
+   * @param {string} newUserEmail
+   * @param {string|null} newUserName
+   */
+  async sendAdminSignupNotification(newUserEmail, newUserName) {
+    const displayName = newUserName ? ` (${newUserName})` : '';
+    const timestamp = new Date().toUTCString();
+
+    const html = buildEmailHtml(`
+      <h1 style="margin:32px 0 16px;font-size:20px;font-weight:700;color:#111827;line-height:1.3;">
+        New SnapState signup
+      </h1>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="background-color:#F5F3FF;border-radius:8px;padding:20px 24px;">
+          <p style="margin:0 0 8px;font-size:14px;color:#374151;">
+            <strong>Email:</strong> ${newUserEmail}
+          </p>
+          <p style="margin:0 0 8px;font-size:14px;color:#374151;">
+            <strong>Name:</strong> ${newUserName || '—'}
+          </p>
+          <p style="margin:0;font-size:13px;color:#9CA3AF;">${timestamp}</p>
+        </td></tr>
+      </table>
+    `);
+
+    const text = `New SnapState signup\n\nEmail: ${newUserEmail}${displayName}\nTime: ${timestamp}`;
+
+    await send({
+      to: 'timbassler@gmail.com',
+      subject: `New signup: ${newUserEmail}`,
+      text,
+      html,
+    });
+  },
+
+
+  /**
    * Send email verification link.
    * @param {string} email
    * @param {string} token

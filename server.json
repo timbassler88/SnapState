@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.timbassler88/snapstate",
+  "description": "Persistent state for AI agent workflows. Save, resume, and replay multi-step workflows.",
+  "repository": {
+    "url": "https://github.com/timbassler88/snapstate",
+    "source": "github"
+  },
+  "version": "1.0.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "snapstate-sdk",
+      "version": "1.0.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "SnapState API URL",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false,
+          "name": "SNAPSTATE_API_URL"
+        },
+        {
+          "description": "Your SnapState API key (starts with snp_)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "SNAPSTATE_API_KEY"
+        }
+      ]
+    }
+  ]
+}

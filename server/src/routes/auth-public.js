@@ -331,9 +331,14 @@ export async function authPublicRoutes(fastify) {
     // Generate and store verification token
     const token = await authService.generateVerificationToken(accountId);
 
-    // Send email (fire-and-forget — don't block response on SMTP)
+    // Send verification email (fire-and-forget)
     emailService.sendVerificationEmail(email, token).catch((err) => {
       fastify.log.error({ msg: 'Failed to send verification email', err: err.message });
+    });
+
+    // Notify site owner of new signup (fire-and-forget)
+    emailService.sendAdminSignupNotification(email, name ?? null).catch((err) => {
+      fastify.log.warn({ msg: 'Failed to send admin signup notification', err: err.message });
     });
 
     return reply.code(201).send({ message: 'Check your email to verify your account' });

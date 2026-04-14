@@ -1,6 +1,7 @@
 {
   "name": "@snapstate/mcp-server",
   "version": "1.0.0",
+  "mcpName": "io.github.timbassler88/snapstate",
   "description": "MCP server wrapper for SnapState — exposes checkpoint tools to any MCP-compatible agent",
   "type": "module",
   "main": "src/index.js",
