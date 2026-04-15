@@ -168,3 +168,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   process.on('SIGTERM', () => shutdown('SIGTERM'));
   process.on('SIGINT', () => shutdown('SIGINT'));
 }
+

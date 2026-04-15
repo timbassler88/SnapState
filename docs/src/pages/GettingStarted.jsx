@@ -145,8 +145,9 @@ export function GettingStarted() {
       <div className="mb-12">
         <H1>SnapState</H1>
         <p className="text-xl text-gray-500 leading-relaxed">
-          Persistent state for AI agent workflows. Save, resume, and replay multi-step
-          workflows across sessions, crashes, and agent handoffs.
+          Universal workflow state that works across any agent framework, any language, any
+          platform. Save, resume, and replay multi-step workflows across sessions, crashes,
+          and agent handoffs.
         </p>
       </div>
 

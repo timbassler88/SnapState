@@ -411,9 +411,9 @@
       <span class="badge-dot"></span>
       Now in Public Beta
     </div>
-    <h1>Persistent state for<br>AI agent workflows</h1>
+    <h1>Universal workflow state<br>for any AI agent</h1>
     <p class="hero-sub">
-      Save, resume, and replay multi-step workflows across sessions, crashes, and agent handoffs. Your agents never lose progress again.
+      Save, resume, and replay agent workflows across any framework, any language, any platform. Your agents share state whether they're built with LangChain, CrewAI, Claude, or raw Python.
     </p>
     <div class="hero-ctas">
       <a href="/get-started" class="btn-primary">Get Started</a>
@@ -490,32 +490,56 @@
       <div class="feature-card">
         <div class="feature-icon">💾</div>
         <div class="feature-title">Checkpoint Save</div>
-        <div class="feature-desc">Save full workflow state after each step. JSON payloads up to 1 MB with automatic diff tracking and ETags for concurrency control.</div>
+        <div class="feature-desc">Save full workflow state from any agent — LangChain, CrewAI, AutoGen, Claude, or custom code. One API, every framework.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">⏮</div>
         <div class="feature-title">Resume &amp; Replay</div>
-        <div class="feature-desc">Resume from the latest checkpoint or replay the entire workflow history step by step. Agents pick up exactly where they left off.</div>
+        <div class="feature-desc">An agent built in Python can resume a workflow started by a JavaScript agent. State is universal, not locked to one framework.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🤖</div>
         <div class="feature-title">Agent Identity</div>
-        <div class="feature-desc">Tag checkpoints with agent IDs. Track which agent did what across multi-agent workflows with a full audit trail.</div>
+        <div class="feature-desc">Track which agent did what. Hand off workflows between different agents and frameworks without losing context.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📊</div>
         <div class="feature-title">Analytics</div>
-        <div class="feature-desc">Built-in workflow stats, failure pattern detection, and per-agent performance metrics. Understand exactly where workflows break.</div>
+        <div class="feature-desc">Compare agent performance across frameworks. See which steps fail, which agents are fastest, where workflows break.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔌</div>
         <div class="feature-title">MCP Server</div>
-        <div class="feature-desc">Works with Claude Desktop and Cline out of the box. Add a system prompt and your agent gets persistent memory automatically.</div>
+        <div class="feature-desc">Native MCP support for Claude Desktop and Cline. Any MCP-compatible client gets persistent memory instantly.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">💰</div>
         <div class="feature-title">Usage-Based Pricing</div>
-        <div class="feature-desc">Generous free tier: 10k writes, 1 GB storage, 5k resumes per month. Pay only for what you use beyond that.</div>
+        <div class="feature-desc">Generous free tier: 10k writes, 1 GB storage, 5k resumes per month. No framework lock-in, no vendor lock-in.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why SnapState ── -->
+<section style="padding:56px 24px;text-align:center;">
+  <div class="container" style="max-width:700px;">
+    <div class="section-label">Why SnapState</div>
+    <h2 class="section-title" style="margin-bottom:10px;">Every framework has its own memory.<br>SnapState connects them all.</h2>
+    <p class="section-sub" style="margin-bottom:40px;">Framework-native memory is a silo. SnapState is the shared layer.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;text-align:left;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;">
+        <div style="font-size:13px;font-weight:700;color:#EF4444;margin-bottom:6px;">LangGraph</div>
+        <div style="font-size:13px;color:var(--dim);line-height:1.5;">Checkpoints only work inside LangChain</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;">
+        <div style="font-size:13px;font-weight:700;color:#EF4444;margin-bottom:6px;">CrewAI</div>
+        <div style="font-size:13px;color:var(--dim);line-height:1.5;">Memory only works inside CrewAI</div>
+      </div>
+      <div style="background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.25);border-radius:12px;padding:20px 22px;">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px;">SnapState</div>
+        <div style="font-size:13px;color:var(--dim);line-height:1.5;">Works everywhere — it's just an API</div>
       </div>
     </div>
   </div>

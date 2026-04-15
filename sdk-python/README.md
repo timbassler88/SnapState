@@ -1,6 +1,10 @@
 # snapstate-sdk (Python)
 
-Python SDK for the [Checkpoint Service](https://github.com/your-org/snapstate) — a workflow state persistence API that lets AI agents save and resume multi-step work across interruptions, crashes, and handoffs between agents.
+Python SDK for [SnapState](https://snapstate.dev) — universal workflow state for AI agents.
+
+Works with any agent framework — LangChain, CrewAI, AutoGen, Claude Desktop, or custom agents. No framework lock-in.
+
+Save and resume multi-step work across interruptions, crashes, and handoffs between agents.
 
 ## Installation
 

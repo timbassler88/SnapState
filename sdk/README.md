@@ -2,6 +2,8 @@
 
 Zero-dependency, isomorphic JavaScript SDK for [SnapState](../README.md).
 
+Works with any agent framework — LangChain, CrewAI, AutoGen, Claude Desktop, or custom agents. No framework lock-in.
+
 Works in Node.js 18+ and modern browsers via native `fetch`.
 
 ## Installation
